@@ -1,0 +1,193 @@
+@charset "utf-8";
+
+/*reset start */
+* {
+  margin: 0;
+  padding: 0;
+  /* border-box allows SIZE (width and height) of elements
+  to CONTAIN/INCLUDE the content, padding, and border,
+  but do NOT include the margin. */
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+a:link,
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+img {
+  display: block;
+}
+/*reset end */
+
+body {
+  background-color: skyblue;
+}
+
+/* container */
+/* make container FIXED with these vals, DO NOT change container
+if you want to change container element then don't directly change
+.container, instead add another class name to the specific container
+element you want to change e.g. <div class="container someClass">
+then you can change that specific container via .container .someClass {} css */
+.container {
+  /* w1200 tab  width 1200px creates a scroll under 1200px width bc of the container
+  so instead if we make .container width 100% it won't create a scroll if we reduce screen size */
+  width: 1200px;
+  /* width: 100%; */
+  /* margin 0 auto to center */
+  margin: 0 auto;
+}
+.layout {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  /* align items center removes the default align items stretch (stretch is like fill container in figma) 
+  you can see if you put bg red on gnbmenu how it differes with or without align items center*/
+  align-items: center;
+}
+
+/* navigation (menu) */
+.gnbMenu > ul {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.gnbMenu a {
+  display: block;
+  padding: 10px 16px;
+  /* background-color: red; */
+}
+/* hamburger button */
+.toggle {
+  width: 30px;
+  height: 30px;
+  background-color: black;
+  display: none;
+}
+
+.header {
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  width: 100%;
+}
+
+.footer {
+  /* width: 100%; not needed since it's display block by default */
+  /* height: 100px; */
+  /* using height is not advised to use except for img sliders
+  instead of setting height to parent, set size of parent using PADDING
+  so that when inner children becomes larger than the parent,
+  the parent's size will automatically grow AS BTG AS the inner children.
+  The reason we use any padding at all to the parent is bc we have to 
+  first make parent APPEAR on screen. unless parent has (BOTH height
+  AND width) OR parent has padding (both y and x), parent will not
+  appear on screen. ALSO even if parent has both height&width or padding
+  set, if parent's POSITION is set to ABSOLUTE, parent will DISAPPEAR
+  on screen UPLESS its LEFT/RIGHT/TOP/BOTTOM is SET to some value!!
+  
+  The reason why I said don't set height EXCEPT to img sliders
+  is bc for img slider the size needs to be fixed, so that
+  even if the inner images or content of the slider becomes larger
+  the entire slider size stays the same!*/
+  padding: 20px 0px;
+  background: white;
+}
+
+/*css responsive start*/
+/* bootstrap navbar was doing this responsive part automatically */
+/* media query has 4 levels, whereas bootstrap has 5 levels of screen size */
+@media screen and (max-width: 1199px) {
+  body {
+    background-color: pink;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  body {
+    background-color: grey;
+  }
+}
+
+/* mobile size. max width 767px */
+@media screen and (max-width: 767px) {
+  .toggle {
+    display: block;
+    /* why does it not show without z-index?? 
+    => bc gnbMenu is its sibling and
+    gnbMenu has displau:block which is the
+    default value. the <h1><a>Logo</a><h1>
+    is also its sibling but logo does not 
+    need z-index to appear since a tags
+    are display:inline-block by default. */
+    z-index: 10;
+  }
+  .gnbMenu > ul {
+    /* display: flex; */
+    flex-direction: column;
+    /* gap: 10px; */
+  }
+  .gnbMenu {
+    /* border: 1px solid #000; */
+    /* position:absolute; // DOES NOT WORK*/
+    /* 
+The position: absolute CSS property positions an element relative
+to its nearest positioned ancestor. A positioned element is one
+whose position property is set to anything other than static. */
+    position: fixed;
+    /* reason why position absolute will not work:
+    before we had header element, gnbMenu had no parent with
+    "position" field, so when gnbMenu position was set to
+    relative, it was set relative to viewport. However
+    when there is header, we have set position:fixed to
+    header which means header HAS the "position" field.
+    Then position absolute will find any parent with the
+    position field (fixed/relative/etc) to base its position on,
+    so now gnbMenu top and left will be based on HEADER's position
+    which is why gnbMenu won't be at center of viewport,
+    but instead at the center of header if I put position:relative.
+    
+    Reason why position fixed works:
+    position fixed positions element relative to the VIEWPORT,
+    REGARDLESS OF its ANCESTOR'S POSTIONS! */
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    /* why do we set -100%? to make menu disappear? => YES. 
+    if smaller than or equal to 767 px, the menu should
+    disappear and reappear when gnbMenu is active
+    i.e when click hamburger/toggle button and gnbMenu
+    has active class (left:0) */
+    left: -100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* despite setting align items center
+    why is gnbMenu still at the top... */
+  }
+  .gnbMenu.active {
+    left: 0;
+    /* even though top and left is 0,
+    it will be at center of viewport since we gave
+    dflex justify center and align items center to gnbMenu! */
+  }
+  .container {
+    /* w100p tab */
+    width: 100%;
+  }
+}
+@media screen and (max-width: 575px) {
+}
+/*css responsive end*/
